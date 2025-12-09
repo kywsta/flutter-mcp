@@ -3,8 +3,8 @@
  * Main entry point for programmatic usage
  */
 
-const { execa } = require('execa');
-const which = require('which');
+import { execa } from 'execa';
+import which from 'which';
 
 class FlutterMCPServer {
   constructor(options = {}) {
@@ -75,4 +75,4 @@ class FlutterMCPServer {
   }
 }
 
-module.exports = FlutterMCPServer;
+export default FlutterMCPServer;

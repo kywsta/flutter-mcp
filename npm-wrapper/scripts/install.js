@@ -4,8 +4,6 @@
  * Provides helpful information after npm installation
  */
 
-const os = require('os');
-
 console.log(`
 ╔════════════════════════════════════════════════════════════════╗
 ║              Flutter MCP Server Installed!                     ║

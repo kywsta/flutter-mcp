@@ -4,11 +4,11 @@
  * This script ensures Python is available and runs the Flutter MCP server
  */
 
-const { execa } = require('execa');
-const which = require('which');
-const ora = require('ora');
-const path = require('path');
-const fs = require('fs');
+import { execa } from 'execa';
+import which from 'which';
+import ora from 'ora';
+import path from 'node:path';
+import fs from 'node:fs';
 
 async function findPython() {
   const pythonCommands = ['python3', 'python'];
