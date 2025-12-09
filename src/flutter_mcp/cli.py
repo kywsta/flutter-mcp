@@ -99,19 +99,30 @@ def main():
             sys.exit(1)
     
     else:  # start or serve
-        # Run the server directly
-        # Print cool header using rich
+        # IMPORTANT: Set environment variables BEFORE any flutter_mcp imports
+        # because FastMCP is initialized at module import time with host/port
+        if args.cache_dir:
+            os.environ['CACHE_DIR'] = args.cache_dir
+        if args.debug:
+            os.environ['DEBUG'] = '1'
+
+        # Set transport configuration (must be before importing server module)
+        os.environ['MCP_TRANSPORT'] = args.transport
+        os.environ['MCP_PORT'] = str(args.port)
+        os.environ['MCP_HOST'] = args.host
+
+        # Now we can safely import from flutter_mcp
         from flutter_mcp.logging_utils import print_server_header
         print_server_header()
-        
+
         from rich.console import Console
         console = Console(stderr=True)
-        
+
         console.print(f"\n[bold green]🚀 Starting Flutter MCP Server v{__version__}[/bold green]")
         console.print("[cyan]📦 Using built-in SQLite cache[/cyan]")
         if args.cache_dir:
             console.print(f"[dim]💾 Cache directory: {args.cache_dir}[/dim]")
-        
+
         # Show transport-specific information
         if args.transport == 'stdio':
             console.print("[yellow]⚡ Server running via STDIO - connect your AI assistant[/yellow]")
@@ -120,23 +131,12 @@ def main():
             console.print(f"[yellow]📡 Listening on http://{args.host}:{args.port}[/yellow]")
             if args.transport == 'sse':
                 console.print(f"[dim]   SSE endpoint: http://{args.host}:{args.port}/sse[/dim]")
-            
+
         console.print("[yellow]⚡ Use Ctrl+C to stop the server[/yellow]\n")
-        
-        # Set environment variables
-        if args.cache_dir:
-            os.environ['CACHE_DIR'] = args.cache_dir
-        if args.debug:
-            os.environ['DEBUG'] = '1'
-        
-        # Set transport configuration
-        os.environ['MCP_TRANSPORT'] = args.transport
-        os.environ['MCP_PORT'] = str(args.port)
-        os.environ['MCP_HOST'] = args.host
-        
+
         # Set flag to indicate we're running from CLI
         sys._flutter_mcp_cli = True
-        
+
         try:
             # Import and run the server
             from . import main as server_main

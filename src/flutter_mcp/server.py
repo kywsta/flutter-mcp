@@ -51,8 +51,13 @@ logger = structlog.get_logger()
 # Rich console for direct output
 console = Console(stderr=True)
 
-# Initialize FastMCP server
-mcp = FastMCP("Flutter Docs Server")
+# Get transport configuration from environment (needed at import time for FastMCP)
+import os
+_mcp_host = os.environ.get('MCP_HOST', '127.0.0.1')
+_mcp_port = int(os.environ.get('MCP_PORT', '8000'))
+
+# Initialize FastMCP server with host/port for HTTP/SSE transports
+mcp = FastMCP("Flutter Docs Server", host=_mcp_host, port=_mcp_port)
 
 # Import our SQLite-based cache
 from .cache import get_cache
@@ -2882,15 +2887,15 @@ def main():
     port = int(os.environ.get('MCP_PORT', '8000'))
     
     # Run the MCP server with appropriate transport
+    # Note: host/port are configured in FastMCP constructor (at module import time via env vars)
     if transport == 'stdio':
         mcp.run()
     elif transport == 'sse':
         logger.info("starting_sse_transport", host=host, port=port)
-        mcp.run(transport='sse', host=host, port=port)
+        mcp.run(transport='sse')
     elif transport == 'http':
         logger.info("starting_http_transport", host=host, port=port)
-        # FastMCP handles HTTP transport internally
-        mcp.run(transport='http', host=host, port=port, path='/mcp')
+        mcp.run(transport='streamable-http')
 
 
 if __name__ == "__main__":
