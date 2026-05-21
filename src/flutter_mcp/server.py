@@ -8,7 +8,14 @@ from typing import Optional, Dict, List, Any, Tuple
 from datetime import datetime
 import time
 
-from mcp.server.fastmcp import FastMCP
+try:
+    from mcp.server.fastmcp import FastMCP
+except ImportError as exc:
+    raise ImportError(
+        "FastMCP is not available. Install a stable MCP SDK release "
+        "(pip install 'mcp>=1.27.0,<2') and reinstall flutter-mcp-server. "
+        "Dev/pre-release mcp builds (e.g. 1.25.1.dev*) omit mcp.server.fastmcp."
+    ) from exc
 import httpx
 # Redis removed - using SQLite cache instead
 from bs4 import BeautifulSoup

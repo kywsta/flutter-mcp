@@ -10,7 +10,7 @@ with open("docs/README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="flutter-mcp-server",
-    version="0.1.0",
+    version="0.1.2",
     author="Flutter MCP Contributors",
     description="MCP server providing real-time Flutter/Dart documentation to AI assistants",
     long_description=long_description,
@@ -33,7 +33,7 @@ setup(
         "aiofiles>=24.1.0",
         "beautifulsoup4>=4.13.4",
         "httpx>=0.28.1",
-        "mcp @ git+https://github.com/modelcontextprotocol/python-sdk.git@main",
+        "mcp>=1.27.0,<2",
         "platformdirs>=4.0.0",
         "structlog>=25.4.0",
     ],
