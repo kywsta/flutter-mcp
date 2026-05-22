@@ -7,7 +7,7 @@ from rich.panel import Panel
 from rich.text import Text
 from rich import box
 
-console = Console()
+console = Console(stderr=True)
 
 def format_cache_stats(logger, method_name, event_dict):
     """

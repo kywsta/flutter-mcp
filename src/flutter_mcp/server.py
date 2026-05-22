@@ -78,14 +78,14 @@ from .error_handling import (
 # Import truncation utilities
 from .truncation import truncate_flutter_docs, create_truncator, DocumentTruncator
 # Import token management
-from .token_manager import TokenManager
+from .token_manager import get_token_manager
 
 # Initialize cache manager
 cache_manager = get_cache()
 logger.info("cache_initialized", cache_type="sqlite", path=cache_manager.db_path)
 
 # Initialize token manager
-token_manager = TokenManager()
+token_manager = get_token_manager()
 
 
 class RateLimiter:
